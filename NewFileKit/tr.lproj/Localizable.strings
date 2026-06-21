@@ -1,0 +1,31 @@
+/* File type names */
+"Folder" = "Klasör";
+"Text Document" = "Metin Belgesi";
+"Markdown" = "Markdown";
+"CSV" = "CSV";
+"JSON" = "JSON";
+"HTML" = "HTML";
+"Python" = "Python";
+"Shell Script" = "Terminal Betiği";
+"Word Document" = "Word Belgesi";
+"Excel Workbook" = "Excel Çalışma Kitabı";
+"PowerPoint Presentation" = "PowerPoint Sunusu";
+
+/* Default file names (Windows-style) */
+"New Folder" = "Yeni Klasör";
+"New Text Document" = "Yeni Metin Belgesi";
+"New Document" = "Yeni Belge";
+"New Spreadsheet" = "Yeni Tablo";
+"New File" = "Yeni Dosya";
+"New Page" = "Yeni Sayfa";
+"New Script" = "Yeni Script";
+"New Shell Script" = "Yeni Betik";
+"New Word Document" = "Yeni Word Belgesi";
+"New Excel Workbook" = "Yeni Excel Çalışma Kitabı";
+"New PowerPoint Presentation" = "Yeni PowerPoint Sunusu";
+
+/* Menus & alerts */
+"New" = "Yeni";
+"Create New File" = "Yeni Dosya Oluştur";
+"Quit" = "Çıkış";
+"Couldn't create file" = "Dosya oluşturulamadı";

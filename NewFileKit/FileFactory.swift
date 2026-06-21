@@ -16,7 +16,7 @@ public enum FileFactory {
         public var errorDescription: String? {
             switch self {
             case .templateMissing(let name):
-                return "Şablon bulunamadı: \(name)"
+                return "Template not found: \(name)"
             }
         }
     }

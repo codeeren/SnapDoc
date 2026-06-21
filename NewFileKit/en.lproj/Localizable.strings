@@ -1,0 +1,31 @@
+/* File type names */
+"Folder" = "Folder";
+"Text Document" = "Text Document";
+"Markdown" = "Markdown";
+"CSV" = "CSV";
+"JSON" = "JSON";
+"HTML" = "HTML";
+"Python" = "Python";
+"Shell Script" = "Shell Script";
+"Word Document" = "Word Document";
+"Excel Workbook" = "Excel Workbook";
+"PowerPoint Presentation" = "PowerPoint Presentation";
+
+/* Default file names (Windows-style) */
+"New Folder" = "New Folder";
+"New Text Document" = "New Text Document";
+"New Document" = "New Document";
+"New Spreadsheet" = "New Spreadsheet";
+"New File" = "New File";
+"New Page" = "New Page";
+"New Script" = "New Script";
+"New Shell Script" = "New Shell Script";
+"New Word Document" = "New Word Document";
+"New Excel Workbook" = "New Excel Workbook";
+"New PowerPoint Presentation" = "New PowerPoint Presentation";
+
+/* Menus & alerts */
+"New" = "New";
+"Create New File" = "Create New File";
+"Quit" = "Quit";
+"Couldn't create file" = "Couldn't create file";

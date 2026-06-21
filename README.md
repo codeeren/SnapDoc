@@ -1,33 +1,35 @@
 # SnapDoc
 
-Windows'taki **Yeni ▸ Word / Excel / Metin …** sağ tık menüsünün macOS karşılığı.
-Bir tıkla aktif klasörde yeni dosya/klasör oluştur.
+The macOS answer to the Windows **New ▸ Word / Excel / Text …** right-click menu.
+Create a new file (or folder) in the active Finder folder with a single click.
 
-İki şekilde çalışır:
+It works two ways:
 
-- **Menü bar**: menü çubuğundaki ikona tıkla → bir tür seç → öndeki Finder
-  penceresinin klasöründe (yoksa Masaüstü'nde) oluşur, Finder'da seçili gelir.
-- **Sağ tık**: bir Finder klasöründe (boş alana da olur) sağ tıkla → tek bir
-  **"Yeni ▸"** öğesi; üzerine gelince türler alt menüde açılır.
+- **Menu bar**: click the menu-bar icon → pick a type → the file is created in the
+  frontmost Finder window's folder (or the Desktop) and selected in Finder.
+- **Right-click**: right-click in a Finder folder (empty space works too) → a single
+  **"New ▸"** item; hover it to reveal the file-type submenu.
 
-## Kurulum
+Localized in **English** and **Turkish** (follows the system language).
 
-İki sürüm var:
+## Install
 
-### 🟦 SnapDoc Lite — DMG ile (kolay)
-[Releases](../../releases) sayfasından `SnapDoc.dmg`'yi indir → aç → SnapDoc'u
-`Applications`'a sürükle. İlk açılışta Gatekeeper uyarısı çıkarsa: **System Settings >
-Privacy & Security** → aşağıda "SnapDoc yine de aç" / **Open Anyway**.
+Two flavors:
 
-> **DMG sürümü menü bar üzerinden belge oluşturmayı destekler. Finder sağ tık
-> entegrasyonu, macOS imzalama ve uzantı kısıtları nedeniyle yalnızca uygulama
-> kaynak koddan yerel olarak derlendiğinde güvenilir şekilde çalışır.**
+### 🟦 SnapDoc Lite — via DMG (easy)
+Download `SnapDoc.dmg` from [Releases](../../releases) → open it → drag **SnapDoc** to
+`Applications`. On first launch, if Gatekeeper warns: **System Settings > Privacy &
+Security** → **Open Anyway**.
 
-(Apple Silicon / arm64 Mac gerekir.)
+> **The DMG build supports creating documents from the menu bar. The Finder
+> right-click integration only works reliably when the app is built locally from
+> source, due to macOS code-signing and extension restrictions** (see *SnapDoc Full*).
 
-### 🟩 SnapDoc Full — kaynaktan derle (sağ tık çalışır)
-Finder sağ tık menüsünün de çalışması için uygulamayı kendi Apple ID'nle derlemen
-gerekir (macOS, Finder uzantılarını ancak yerel/geçerli bir imzayla kaydeder):
+(Requires an Apple Silicon / arm64 Mac.)
+
+### 🟩 SnapDoc Full — build from source (right-click works)
+For the Finder right-click menu to work, build the app with your own Apple ID — macOS
+only registers Finder extensions signed with a locally valid certificate:
 
 ```sh
 git clone https://github.com/codeeren/SnapDoc.git
@@ -35,97 +37,81 @@ cd SnapDoc
 ./build.sh
 ```
 
-Ön koşullar ve ayrıntılar için aşağıdaki **Derleme** bölümüne bak.
+See **Building** below for prerequisites.
 
-## Türler
+## File types
 
-Klasör, Metin (.txt), Markdown (.md), CSV (.csv), JSON (.json), HTML (.html),
-Python (.py), Terminal Betiği (.command), Word (.docx), Excel (.xlsx), PowerPoint (.pptx).
+Folder, Text (.txt), Markdown (.md), CSV (.csv), JSON (.json), HTML (.html),
+Python (.py), Shell Script (.command), Word (.docx), Excel (.xlsx), PowerPoint (.pptx).
 
-Tür eklemek/çıkarmak için tek dosya yeterli: `NewFileKit/FileCatalog.swift`.
+Add or remove a type by editing one file: `NewFileKit/FileCatalog.swift`.
 
-> Boş `.docx/.xlsx/.pptx` geçerli dosya değildir; `NewFileKit/Resources/` içindeki
-> geçerli boş şablonlardan kopyalanır.
+> Empty `.docx/.xlsx/.pptx` files aren't valid; SnapDoc copies them from valid blank
+> templates in `NewFileKit/Resources/`.
 
-## Mimari
+## Architecture
 
 ```
-SnapDoc.app                  (LSUIElement — Dock'ta görünmez, sadece menü bar)
-├─ App/                      menü bar (NSStatusItem) + RequestWatcher
-├─ NewFileKit.framework      ortak katalog + dosya oluşturma + şablonlar + köprü
-└─ FinderSyncExt.appex       Finder Sync uzantısı (sağ tık alt menüsü, SANDBOX'LI)
+SnapDoc.app                  (LSUIElement — no Dock icon, menu bar only)
+├─ App/                      menu bar (NSStatusItem) + RequestWatcher
+├─ NewFileKit.framework      shared catalog + file creation + templates + localization
+└─ FinderSyncExt.appex       Finder Sync extension (right-click submenu, SANDBOXED)
 ```
 
-`App` ve `FinderSyncExt`, ortak `NewFileKit` framework'ünü kullanır.
+`App` and `FinderSyncExt` both use the shared `NewFileKit` framework. All user-facing
+strings live in `NewFileKit` (en + tr) so both processes share one translation table.
 
-### Çözülen macOS engelleri (geliştirici notları)
+### macOS hurdles solved (developer notes)
 
-Bu projeyi çalışır hale getirmek için aşılan, belgelenmeye değer noktalar:
+Worth documenting, because each one silently breaks the app:
 
-1. **ASCII paket adı.** Bundle/executable adındaki Unicode karakterler (örn. "ş")
-   codesign'ı bozuyor (`code object is not signed at all`). `PRODUCT_NAME` ASCII
-   tutulmalı; görünen ad gerekiyorsa `CFBundleDisplayName` ile ayarlanır.
-2. **Apple Development sertifikası şart.** macOS Tahoe, ad-hoc imzalı Finder Sync
-   uzantısını kaydetmiyor. Xcode'a Apple ID ile giriş + ücretsiz "Personal Team"
-   gerekli (`DEVELOPMENT_TEAM` `project.yml`'de gömülü).
-3. **Uzantı sandbox'lı OLMALI.** Sandbox'sız uzantıyı `pkd` sessizce reddediyor.
-   `com.apple.security.app-sandbox = true` + dosya yazma için path istisnaları.
-4. **Menü eylemi `target=self` ile gitmiyor.** Menü Finder sürecinde çizildiği için
-   eylemler responder zinciriyle dönmeli; seçilen tür `NSMenuItem.tag` ile taşınır.
-5. **Karantina / "hasar görmüş".** Sandbox, oluşturulan dosyalara `com.apple.quarantine`
-   koyar ve içeriden kaldırılmasına izin vermez → `.command` "hasar görmüş" der.
-   Çözüm: uzantı `/Users/Shared/SnapDoc/`'a istek bırakır; sandbox'sız app
-   (`RequestWatcher`) karantinayı siler.
+1. **ASCII bundle name.** Non-ASCII characters in the bundle/executable name break
+   codesign (`code object is not signed at all`). Keep `PRODUCT_NAME` ASCII; use
+   `CFBundleDisplayName` for a localized display name.
+2. **Apple Development certificate required.** macOS Tahoe refuses to register an
+   ad-hoc-signed Finder Sync extension. A (free) Apple ID + "Personal Team" in Xcode
+   is needed (`DEVELOPMENT_TEAM` is baked into `project.yml`).
+3. **The extension must be sandboxed.** `pkd` silently rejects a non-sandboxed Finder
+   Sync extension. `app-sandbox = true` + file-access path exceptions.
+4. **Menu actions don't fire with `target=self`.** The menu is drawn in Finder's
+   process, so actions must travel the responder chain; the chosen type is carried in
+   `NSMenuItem.tag`.
+5. **Quarantine / "damaged".** The sandbox stamps `com.apple.quarantine` on created
+   files and won't let the extension remove it → `.command` files appear "damaged".
+   Fix: the extension drops a request in `/Users/Shared/SnapDoc/`; the non-sandboxed
+   app (`RequestWatcher`) removes the quarantine — but only if the quarantine agent is
+   our own extension (confused-deputy protection).
 
-## Derleme
+## Building
 
-**Ön koşullar (bir kez):**
+**Prerequisites (once):**
 
-1. **Tam Xcode** kurulu (`sudo xcode-select -s /Applications/Xcode.app`).
-2. **Xcode'a Apple ID** ile giriş: Xcode > Settings > Accounts > "+" (ücretsiz).
+1. **Full Xcode** installed (`sudo xcode-select -s /Applications/Xcode.app`).
+2. **Sign into Xcode** with an Apple ID: Xcode > Settings > Accounts > "+" (free).
 3. **XcodeGen**: `brew install xcodegen`.
 
-**Derle + kur + uzantıyı etkinleştir (tek komut):**
+**Build + install + enable the extension (one command):**
 
 ```sh
 ./build.sh
 ```
 
-Betik: proje üretir, otomatik imzayla derler, `/Applications`'a kurar, LaunchServices'e
-kaydeder, uygulamayı başlatır, Finder uzantısını etkinleştirir.
+It generates the project, builds with automatic signing, installs to `/Applications`,
+registers with LaunchServices, launches the app, and enables the Finder extension.
 
-> İlk seferde Finder Sync uzantısı System Settings > General > Login Items &
-> Extensions altında otomatik etkin gelir; gelmezse oradan elle açılır.
-> Menü bar'ı ilk kullanışta Finder otomasyon (Apple Events) izni sorulur → İzin Ver.
+> On first run, enable the Finder Sync extension under System Settings > General >
+> Login Items & Extensions if it isn't already on. The first menu-bar use asks for
+> Finder automation (Apple Events) permission → Allow.
 
-## Doğrulama
+## Notes / limitations
 
-1. Menü çubuğunda ikon → tıkla → tür listesi → dosya oluşur.
-2. Finder'da boş alana sağ tık → **Yeni ▸** → tür → dosya/klasör oluşur.
-3. **Terminal Betiği** oluştur → çift tıkla → "hasar" demeden Terminal'de çalışır.
+- `DEVELOPMENT_TEAM` in `project.yml` is machine-specific; replace it with your own
+  Apple ID team ID when building on another machine.
+- **Certificate lifetime:** a free Apple Development certificate is valid ~1 year
+  (macOS has no iOS-style 7-day limit). Rebuild with `./build.sh` when it expires.
+- `.command` de-quarantine needs the menu-bar app running (the login item guarantees
+  this). All other types are created fine even when the app is closed.
 
-## Sağlamlık / güvenlik
-
-- **Confused-deputy koruması:** App, bir `.req` isteğindeki dosyanın karantinasını
-  **yalnızca ajanı kendi uzantımız (`FinderSyncExt`) ise** kaldırır. Böylece kötü
-  niyetli bir süreç, app'i kullanarak Safari'den inmiş bir dosyanın Gatekeeper
-  karantinasını sildiremez. Ek olarak istek klasörü `/Users/Shared/SnapDoc`
-  755/kullanıcı sahipli — başka kullanıcı yazamaz.
-- **Konteyner tuzağı kapatıldı:** Hedef klasör belirlenemezse uzantı dosyayı
-  sandbox konteynerine yazmaz; işlemi iptal eder.
-- **Otomatik başlatma:** App, `SMAppService` ile Login Item olarak kayıtlıdır;
-  yeniden başlatmadan sonra da çalışır. İstemiyorsan System Settings > General >
-  Login Items'tan kaldırabilirsin.
-
-## Notlar / kısıtlar
-
-- `DEVELOPMENT_TEAM` (`project.yml` içinde) bu makineye özel; başka makinede kendi
-  Apple ID team ID'nle değiştir.
-- **Sertifika ömrü:** Ücretsiz Apple Development sertifikası ~1 yıl geçerlidir
-  (macOS'ta iOS'taki 7 günlük sınır yoktur). Süre dolarsa `./build.sh` ile yeniden derle.
-- `.command` de-quarantine'i için menü bar uygulamasının çalışıyor olması gerekir
-  (Login Item bunu garanti eder). Diğer türler app kapalıyken de sağ tıktan oluşur.
-
-## Lisans
+## License
 
 MIT

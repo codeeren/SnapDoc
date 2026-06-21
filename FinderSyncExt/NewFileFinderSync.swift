@@ -22,9 +22,9 @@ final class NewFileFinderSync: FIFinderSync {
 
         // Not: alt menü ikonu Finder sürecinde template olarak çizilmediği için
         // siyah görünüyordu; temiz dursun diye ikon koymuyoruz.
-        let parent = NSMenuItem(title: "Yeni", action: nil, keyEquivalent: "")
+        let parent = NSMenuItem(title: Loc.string("New"), action: nil, keyEquivalent: "")
 
-        let submenu = NSMenu(title: "Yeni")
+        let submenu = NSMenu(title: Loc.string("New"))
         // ÖNEMLİ: menü Finder sürecinde çizilir; bu yüzden target=self KULLANMA
         // (o nesne Finder sürecinde yok). Eylem responder zinciriyle uzantıya döner.
         // Hangi türün seçildiğini taşımak için tag = katalog indeksi kullanılır.

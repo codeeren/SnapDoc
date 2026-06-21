@@ -5,38 +5,38 @@ import Foundation
 public enum FileCatalog {
 
     public static let all: [FileType] = [
-        FileType(id: "folder", displayName: "Klasör", fileExtension: "",
-                 defaultBaseName: "Yeni Klasör", content: .folder),
+        FileType(id: "folder", displayName: Loc.string("Folder"), fileExtension: "",
+                 defaultBaseName: Loc.string("New Folder"), content: .folder),
 
-        FileType(id: "txt",  displayName: "Metin Belgesi", fileExtension: "txt",
-                 defaultBaseName: "Yeni Metin Belgesi", content: .text("")),
+        FileType(id: "txt",  displayName: Loc.string("Text Document"), fileExtension: "txt",
+                 defaultBaseName: Loc.string("New Text Document"), content: .text("")),
 
-        FileType(id: "md",   displayName: "Markdown", fileExtension: "md",
-                 defaultBaseName: "Yeni Belge", content: .text("# Başlık\n")),
+        FileType(id: "md",   displayName: Loc.string("Markdown"), fileExtension: "md",
+                 defaultBaseName: Loc.string("New Document"), content: .text("# Title\n")),
 
-        FileType(id: "csv",  displayName: "CSV", fileExtension: "csv",
-                 defaultBaseName: "Yeni Tablo", content: .text("")),
+        FileType(id: "csv",  displayName: Loc.string("CSV"), fileExtension: "csv",
+                 defaultBaseName: Loc.string("New Spreadsheet"), content: .text("")),
 
-        FileType(id: "json", displayName: "JSON", fileExtension: "json",
-                 defaultBaseName: "Yeni Dosya", content: .text("{}\n")),
+        FileType(id: "json", displayName: Loc.string("JSON"), fileExtension: "json",
+                 defaultBaseName: Loc.string("New File"), content: .text("{}\n")),
 
-        FileType(id: "html", displayName: "HTML", fileExtension: "html",
-                 defaultBaseName: "Yeni Sayfa", content: .text(htmlSkeleton)),
+        FileType(id: "html", displayName: Loc.string("HTML"), fileExtension: "html",
+                 defaultBaseName: Loc.string("New Page"), content: .text(htmlSkeleton)),
 
-        FileType(id: "py",   displayName: "Python", fileExtension: "py",
-                 defaultBaseName: "Yeni Script", content: .text("#!/usr/bin/env python3\n")),
+        FileType(id: "py",   displayName: Loc.string("Python"), fileExtension: "py",
+                 defaultBaseName: Loc.string("New Script"), content: .text("#!/usr/bin/env python3\n")),
 
-        FileType(id: "command", displayName: "Terminal Betiği", fileExtension: "command",
-                 defaultBaseName: "Yeni Betik", content: .executableText("#!/bin/bash\n")),
+        FileType(id: "command", displayName: Loc.string("Shell Script"), fileExtension: "command",
+                 defaultBaseName: Loc.string("New Shell Script"), content: .executableText("#!/bin/bash\n")),
 
-        FileType(id: "docx", displayName: "Word Belgesi", fileExtension: "docx",
-                 defaultBaseName: "Yeni Word Belgesi", content: .template("blank")),
+        FileType(id: "docx", displayName: Loc.string("Word Document"), fileExtension: "docx",
+                 defaultBaseName: Loc.string("New Word Document"), content: .template("blank")),
 
-        FileType(id: "xlsx", displayName: "Excel Çalışma Kitabı", fileExtension: "xlsx",
-                 defaultBaseName: "Yeni Excel Çalışma Kitabı", content: .template("blank")),
+        FileType(id: "xlsx", displayName: Loc.string("Excel Workbook"), fileExtension: "xlsx",
+                 defaultBaseName: Loc.string("New Excel Workbook"), content: .template("blank")),
 
-        FileType(id: "pptx", displayName: "PowerPoint Sunusu", fileExtension: "pptx",
-                 defaultBaseName: "Yeni PowerPoint Sunusu", content: .template("blank")),
+        FileType(id: "pptx", displayName: Loc.string("PowerPoint Presentation"), fileExtension: "pptx",
+                 defaultBaseName: Loc.string("New PowerPoint Presentation"), content: .template("blank")),
     ]
 
     public static func type(withID id: String) -> FileType? {
@@ -45,11 +45,11 @@ public enum FileCatalog {
 
     private static let htmlSkeleton = """
     <!DOCTYPE html>
-    <html lang="tr">
+    <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Yeni Sayfa</title>
+        <title>New Page</title>
     </head>
     <body>
 

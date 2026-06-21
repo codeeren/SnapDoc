@@ -1,6 +1,7 @@
 name: SnapDoc
 options:
   bundleIdPrefix: com.eren
+  developmentLanguage: en
   deploymentTarget:
     macOS: "13.0"
   createIntermediateGroups: true
@@ -51,9 +52,11 @@ targets:
       properties:
         CFBundleName: SnapDoc
         CFBundleDisplayName: SnapDoc
+        CFBundleDevelopmentRegion: en
+        CFBundleLocalizations: [en, tr]
         LSUIElement: true
         LSMinimumSystemVersion: "13.0"
-        NSAppleEventsUsageDescription: "Öndeki Finder klasörünü bulup orada yeni dosya oluşturmak için Finder'a erişim gerekiyor."
+        NSAppleEventsUsageDescription: "SnapDoc needs access to Finder to find the frontmost folder and create a new file there."
     entitlements:
       path: App/SnapDoc.entitlements
       properties:

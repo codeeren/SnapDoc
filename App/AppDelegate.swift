@@ -22,7 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         item.button?.image = icon
 
         let menu = NSMenu()
-        let header = NSMenuItem(title: "Yeni Dosya Oluştur", action: nil, keyEquivalent: "")
+        let header = NSMenuItem(title: Loc.string("Create New File"), action: nil, keyEquivalent: "")
         header.isEnabled = false
         menu.addItem(header)
         menu.addItem(.separator())
@@ -37,7 +37,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Çıkış",
+        menu.addItem(NSMenuItem(title: Loc.string("Quit"),
                                 action: #selector(NSApplication.terminate(_:)),
                                 keyEquivalent: "q"))
 
@@ -56,7 +56,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             NSWorkspace.shared.activateFileViewerSelecting([url])
         } catch {
             let alert = NSAlert()
-            alert.messageText = "Dosya oluşturulamadı"
+            alert.messageText = Loc.string("Couldn't create file")
             alert.informativeText = error.localizedDescription
             alert.alertStyle = .warning
             alert.runModal()
