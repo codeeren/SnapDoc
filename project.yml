@@ -1,0 +1,99 @@
+name: SnapDoc
+options:
+  bundleIdPrefix: com.eren
+  deploymentTarget:
+    macOS: "13.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # macOS Tahoe, Finder Sync uzantısı kaydı için ad-hoc imzayı kabul etmiyor;
+    # ücretsiz Apple Development sertifikası gerekir. Otomatik imzalama:
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "Apple Development"
+    DEVELOPMENT_TEAM: "8UKF688CQS"   # Eren Yılmaz (Personal Team)
+    ARCHS: arm64
+
+targets:
+
+  NewFileKit:
+    type: framework
+    platform: macOS
+    sources:
+      - path: NewFileKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.eren.SnapDocKit
+        DEFINES_MODULE: "YES"
+        GENERATE_INFOPLIST_FILE: "YES"
+
+  SnapDoc:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+    dependencies:
+      - target: NewFileKit
+        embed: true
+      - target: FinderSyncExt
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.eren.SnapDoc
+        PRODUCT_NAME: SnapDoc
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks"
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleName: SnapDoc
+        CFBundleDisplayName: SnapDoc
+        LSUIElement: true
+        LSMinimumSystemVersion: "13.0"
+        NSAppleEventsUsageDescription: "Öndeki Finder klasörünü bulup orada yeni dosya oluşturmak için Finder'a erişim gerekiyor."
+    entitlements:
+      path: App/SnapDoc.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+
+  FinderSyncExt:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: FinderSyncExt
+    dependencies:
+      - target: NewFileKit
+        embed: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.eren.SnapDoc.FinderSyncExt
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../../../../Frameworks @loader_path/../../../../Frameworks"
+    info:
+      path: FinderSyncExt/Info.plist
+      properties:
+        CFBundleName: SnapDoc Finder Uzantısı
+        CFBundleDisplayName: SnapDoc Finder Uzantısı
+        # Uzantının oluşturduğu dosyalara karantina konmasın (.command "hasar" sorunu).
+        LSFileQuarantineEnabled: false
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.FinderSync
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).NewFileFinderSync
+    entitlements:
+      path: FinderSyncExt/Ext.entitlements
+      properties:
+        # Finder Sync uzantısı macOS tarafından kaydedilebilmek için sandbox'lı OLMALI.
+        com.apple.security.app-sandbox: true
+        # Sağ tıklanan klasöre yeni dosya yazabilmek için dosya erişimi:
+        com.apple.security.files.user-selected.read-write: true
+        com.apple.security.temporary-exception.files.absolute-path.read-write: "/"
+
+schemes:
+  SnapDoc:
+    build:
+      targets:
+        SnapDoc: all
+    run:
+      config: Debug
