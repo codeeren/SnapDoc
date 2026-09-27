@@ -2,15 +2,34 @@ import Cocoa
 import FinderSync
 import NewFileKit
 
-/// Finder Sync extension that adds a single "Yeni Dosya ▸" item to the Finder
+/// Finder Sync extension that adds a single "New ▸" item to the Finder
 /// context menu; hovering it reveals the file-type submenu. Works on the empty
 /// area of a folder (container) as well as on selected items.
 final class NewFileFinderSync: FIFinderSync {
 
     override init() {
         super.init()
-        // Watch the whole file system so the menu appears everywhere.
-        FIFinderSyncController.default().directoryURLs = [URL(fileURLWithPath: "/")]
+        refreshWatchedVolumes()
+
+        // "/" only covers the boot volume. NAS (SMB), USB and other disks are
+        // separate volumes and must be registered one by one — including those
+        // mounted/unmounted while the extension is running.
+        let center = NSWorkspace.shared.notificationCenter
+        for name in [NSWorkspace.didMountNotification, NSWorkspace.didUnmountNotification] {
+            center.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
+                self?.refreshWatchedVolumes()
+            }
+        }
+    }
+
+    /// Watches the boot volume plus every currently mounted volume.
+    private func refreshWatchedVolumes() {
+        var urls: Set<URL> = [URL(fileURLWithPath: "/")]
+        let volumes = FileManager.default.mountedVolumeURLs(
+            includingResourceValuesForKeys: nil, options: [.skipHiddenVolumes]) ?? []
+        urls.formUnion(volumes)
+        FIFinderSyncController.default().directoryURLs = urls
+        NSLog("SnapDoc: izlenen birimler: \(urls.map(\.path).sorted())")
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
