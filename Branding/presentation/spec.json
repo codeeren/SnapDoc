@@ -1,0 +1,38 @@
+{
+  "brand": "SnapDoc",
+  "tagline": "Yeni dosya, tek tıkla",
+  "brief": "macOS için Windows tarzı 'Yeni ▸' menüsü: menü çubuğundan veya Finder sağ tıkından tek tıkla boş dosya oluşturur. Logo 16 pt menü çubuğunda tek renk çalışmalı, Dock'ta öne çıkmalı ve 'sayfa + artı rozeti' klişesinden ayrışmalı.",
+  "adjectives": ["hızlı", "hafif", "sade", "macOS'a yerli"],
+  "criteria": "Başarı: 16 px'te okunur, tek renkte çalışır, Dock'ta Pages/TextEdit/Finder'dan ayrışır, fikri tek cümlede anlatılır.",
+  "mockups": ["app-icon", "readme", "website", "favicon-tab", "social", "sticker"],
+  "nav": ["Özellikler", "İndir", "GitHub"],
+  "brand_color": "#F25A2B",
+  "tile_color": "#16181D",
+  "greyscale": false,
+  "final": true,
+  "designer": "Claude",
+  "round": 2,
+  "concepts": [
+    {
+      "name": "Artı Köşe",
+      "symbol": "../masters/snapdoc-symbol.svg",
+      "lockup": "../masters/snapdoc-horizontal.svg",
+      "stacked": "../masters/snapdoc-stacked.svg",
+      "symbol_on_tile": "../masters/snapdoc-symbol-reversed.svg",
+      "symbol_on_dark": "../masters/snapdoc-symbol-reversed.svg",
+      "lockup_on_dark": "../masters/snapdoc-horizontal-reversed.svg",
+      "stacked_on_dark": "../masters/snapdoc-stacked-reversed.svg",
+      "lockup_on_tile": "../masters/snapdoc-horizontal-reversed.svg",
+      "stacked_on_tile": "../masters/snapdoc-stacked-reversed.svg",
+      "idea": "Sayfanın kıvrık köşesinin yerini 'yeni' artısı alıyor: dosya ve eylem tek siluet.",
+      "rationale": [
+        "Rozet değil, sayfanın parçası: sayfa artının etrafından oyulmuş",
+        "Artının yuvarlak uçları wordmark'ın yuvarlak harf uçlarıyla aynı dil",
+        "Mürekkep zemin + mercan artı: Dock'taki mavi/turuncu belge ikonlarından ayrışır",
+        "16 px için ayrı, boşlukları açılmış küçük boyut çizimi"
+      ]
+    }
+  ],
+  "recommendation": "Artı Köşe: en net fikir, en güçlü küçük boyut performansı, menü çubuğunda tek renk sorunsuz.",
+  "next_steps": ["Uygulama ve menü çubuğu ikonlarını projeye yerleştirme", "README başlığını yeni yatay logo ile güncelleme", "macOS 26 için Icon Composer (.icon) sürümü"]
+}

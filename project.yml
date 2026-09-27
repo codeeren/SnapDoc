@@ -9,8 +9,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    MARKETING_VERSION: "1.0"
-    CURRENT_PROJECT_VERSION: "1"
+    MARKETING_VERSION: "1.1"
+    CURRENT_PROJECT_VERSION: "2"
     # macOS Tahoe, Finder Sync uzantısı kaydı için ad-hoc imzayı kabul etmiyor;
     # ücretsiz Apple Development sertifikası gerekir. Otomatik imzalama:
     CODE_SIGN_STYLE: Automatic
@@ -52,6 +52,8 @@ targets:
       properties:
         CFBundleName: SnapDoc
         CFBundleDisplayName: SnapDoc
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CFBundleDevelopmentRegion: en
         CFBundleLocalizations: [en, tr]
         LSUIElement: true
@@ -79,6 +81,8 @@ targets:
       properties:
         CFBundleName: SnapDoc Finder Uzantısı
         CFBundleDisplayName: SnapDoc Finder Uzantısı
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         # Uzantının oluşturduğu dosyalara karantina konmasın (.command "hasar" sorunu).
         LSFileQuarantineEnabled: false
         NSExtension:

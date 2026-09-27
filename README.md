@@ -1,3 +1,5 @@
+<p align="center"><img src="Branding/png/snapdoc-horizontal.png" alt="SnapDoc" width="420"></p>
+
 # SnapDoc
 
 The macOS answer to the Windows **New ▸ Word / Excel / Text …** right-click menu.

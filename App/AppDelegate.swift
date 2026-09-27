@@ -16,8 +16,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         try? SMAppService.mainApp.register()
 
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        let icon = NSImage(systemSymbolName: "doc.badge.plus",
-                           accessibilityDescription: "Yeni Dosya")
+        let icon = NSImage(named: "MenuBarIcon")
+            ?? NSImage(systemSymbolName: "doc.badge.plus", accessibilityDescription: nil)
+        icon?.size = NSSize(width: 18, height: 18)
+        icon?.accessibilityDescription = "Yeni Dosya"
         icon?.isTemplate = true   // menü çubuğunun açık/koyu temasına uyum sağlar
         item.button?.image = icon
 
