@@ -49,7 +49,9 @@ Python (.py), Shell Script (.command), Word (.docx), Excel (.xlsx), PowerPoint (
 Add or remove a type by editing one file: `NewFileKit/FileCatalog.swift`.
 
 > Empty `.docx/.xlsx/.pptx` files aren't valid; SnapDoc copies them from valid blank
-> templates in `NewFileKit/Resources/`.
+> templates. Word and PowerPoint templates are localized (`NewFileKit/en.lproj/`,
+> `NewFileKit/tr.lproj/`) so a new document's proofing language matches the system
+> language (`en-US` / `tr-TR`); the Excel template is in `NewFileKit/Resources/`.
 
 ## Architecture
 
