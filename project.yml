@@ -9,8 +9,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    MARKETING_VERSION: "1.2"
-    CURRENT_PROJECT_VERSION: "3"
+    MARKETING_VERSION: "1.2.1"
+    CURRENT_PROJECT_VERSION: "4"
     # macOS Tahoe, Finder Sync uzantısı kaydı için ad-hoc imzayı kabul etmiyor;
     # ücretsiz Apple Development sertifikası gerekir. Otomatik imzalama:
     CODE_SIGN_STYLE: Automatic

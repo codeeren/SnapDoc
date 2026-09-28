@@ -43,6 +43,11 @@ public enum FileFactory {
                 throw FactoryError.templateMissing("\(name).\(type.fileExtension)")
             }
             try FileManager.default.copyItem(at: src, to: target)
+            // copyItem keeps the template's dates, so a brand-new file would show
+            // the date the template was built. Stamp it as created/modified now.
+            let now = Date()
+            try? FileManager.default.setAttributes([.creationDate: now, .modificationDate: now],
+                                                   ofItemAtPath: target.path)
 
         case .folder:
             try FileManager.default.createDirectory(at: target,
